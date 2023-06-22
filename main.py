@@ -2,7 +2,7 @@ import os
 import PySimpleGUI as sg
 
 layout = [
-  [sg.Text('Main Menu')],
+  [sg.Text('==Main Menu==')],
   [sg.Button('Tools')],
   [sg.Button('Games')],
   [sg.Button('Exit')]
