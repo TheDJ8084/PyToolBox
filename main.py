@@ -1,4 +1,4 @@
-import os
+import subprocess
 import PySimpleGUI as sg
 
 menu_def = [
@@ -17,40 +17,43 @@ window = sg.Window('PyToolBox', layout)
 while True:
   event, values = window.read()
 
+  if event == sg.WIN_CLOSED:
+    break
+
   if event == 'Calculator':
-    os.system('python calcmenu.py')
+    subprocess.Popen(['python3', './calculator.py'])
     break
 
   if event == 'Dart Score':
-    os.system('python dart.py')
+    subprocess.Popen(['python3', './dart.py'])
     break
 
   if event == 'Dice Roller':
-    os.system('python dice.py')
+    subprocess.Popen(['python3', './dice.py'])
     break
 
   if event == 'Timer':
-    os.system('python timer.py')
+    subprocess.Popen(['python3', './timer.py'])
     break
 
   if event == 'RNG':
-    os.system('python rng.py')
+    subprocess.Popen(['python3', './rng.py'])
     break
 
   if event == 'Converter':
-        os.system('python converter.py')
-        break
+    subprocess.Popen(['python3', './converter.py'])
+    break
 
   if event == 'Hangman':
-    os.system('python hangman.py')
+    subprocess.Popen(['python3', './hangman.py'])
     break
 
   if event == 'Rock Paper Scissors':
-    os.system('python rockpaperscissors.py')
+    subprocess.Popen(['python3', './rockpaperscissors.py'])
     break
 
   if event == 'Snake':
-    os.system('python snake.py')
+    subprocess.Popen(['python3', './snake.py'])
     break
 
   if event == 'Exit':

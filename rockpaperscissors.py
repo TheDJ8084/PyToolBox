@@ -47,6 +47,6 @@ def play_game():
             print('Exiting')
             time.sleep(3)
             os.system('cls' if os.name == 'nt' else 'clear')
-            os.system("python games.py")
+            subprocess.Popen(['python3', './main.py'])
 
 play_game()

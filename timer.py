@@ -45,11 +45,11 @@ def updatetimer(Minutes,Seconds):
       print('---------------------------------')
       print('exiting...')
       time.sleep(3)
-      os.system("python tools.py")
+      subprocess.Popen(['python3', './main.py'])
     else:
       print('invalid option, exiting...')
       time.sleep(3)
-      os.system("python tools.py")
+      subprocess.Popen(['python3', './main.py'])
       time.sleep(3)
   
   if Seconds == 0:

@@ -75,7 +75,7 @@ def ronde(punten,beurtscore,beurten,x,y):
         print('---------------------------------')
         print('exiting...')
         time.sleep(3)
-        os.system("python tools.py")
+        subprocess.Popen(['python3', './main.py'])
       else:
         print('invalid option, exiting...')
         time.sleep(3)

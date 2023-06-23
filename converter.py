@@ -1,4 +1,4 @@
-import os, sys
+import subprocess
 import PySimpleGUI as sg
 
 layout = [
@@ -18,7 +18,7 @@ while True:
     if event == '-CONVERT-':
         input_value = values['-INPUT-']
         if input_value.isnumeric():
-            match values ['-UNITS-']:
+            match values['-UNITS-']:
                 case 'km to mile':
                     output = round(float(input_value) * 0.6214, 2)
                     output_string = f'{input_value} km are {output} miles.'
@@ -36,7 +36,7 @@ while True:
             window['-OUTPUT-'].update('Please enter a number')
 
     if event == 'Back to menu':
-        os.system('python main.py')
-        sys.exit()
+        subprocess.Popen(['python3', './main.py'])
+        break
 
 window.close()

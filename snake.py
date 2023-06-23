@@ -89,4 +89,4 @@ while True:
   snake_body[0][1] in (0, FIELD_HEIGHT -1) or\
   snake_body[0] in snake_body[1:]:
     os.system('cls' if os.name == 'nt' else 'clear')
-    os.system("python games.py")
+    subprocess.Popen(['python3', './main.py'])
