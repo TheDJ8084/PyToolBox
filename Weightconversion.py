@@ -1,8 +1,10 @@
 import os
 import time
 
+
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
+
 
 def convert_weight(weight, from_unit, to_unit):
     units = {
@@ -15,6 +17,7 @@ def convert_weight(weight, from_unit, to_unit):
         "mg": 0.001
     }
     return weight * units[from_unit] / units[to_unit]
+
 
 def main():
     print("Weight Conversion Program")
@@ -31,28 +34,17 @@ def main():
     choice = input('convert again? (y/n)')
 
     if choice == 'y':
-      print('---------------------------------')
-      main() 
+        print('---------------------------------')
+        main()
     elif choice == 'n':
-      print('---------------------------------')
-      print('exiting...')
-      time.sleep(3)
-      subprocess.Popen(['python3', './main.py'])
+        print('---------------------------------')
+        print('exiting...')
+        time.sleep(3)
+        subprocess.Popen(['python3', './main.py'])
     else:
-      print('invalid option, exiting...')
-      time.sleep(3)
-
-
-
-
-
-
-
-
-
+        print('invalid option, exiting...')
+        time.sleep(3)
 
 
 clear_screen()
 main()
-
-

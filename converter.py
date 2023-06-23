@@ -2,8 +2,9 @@ import subprocess
 import PySimpleGUI as sg
 
 layout = [
-    [sg.Input( key = '-INPUT-'), sg.Spin(['km to mile', 'kg to pound', 'sec to min'], key = '-UNITS-'), sg.Button('Convert', key = '-CONVERT-')],
-    [sg.Text('Output', key = '-OUTPUT-')],
+    [sg.Input(key='-INPUT-'), sg.Spin(['km to mile', 'kg to pound', 'sec to min'], key='-UNITS-'),
+     sg.Button('Convert', key='-CONVERT-')],
+    [sg.Text('Output', key='-OUTPUT-')],
     [sg.Button('Back to menu')]
 ]
 

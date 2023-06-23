@@ -1,92 +1,95 @@
-from pytimedinput import timedInput
-import os
+import PySimpleGUI as sg
+from time import time
 from random import randint
-from colorama import Fore, init
+import subprocess
 
-def print_field():
-  for cell in CELLS:
-    if cell in snake_body:
-      print(Fore.GREEN + 'x', end = '')
-    elif cell [0] in (0, FIELD_WIDTH - 1) or cell[1] in (0, FIELD_HEIGHT - 1):
-      print(Fore.CYAN + '#', end = '')
-    elif cell == apple_pos:
-      print(Fore.RED + 'a', end = '')
-    else:
-      print(' ', end = '')
-      
-    if cell[0] == FIELD_WIDTH - 1:
-      print('')
 
-def update_snake():
-  global eaten
-  new_head = snake_body[0][0] + direction[0], snake_body[0][1] + direction[1]
-  snake_body.insert(0,new_head)
-  if not eaten:
-      snake_body.pop(-1)
-  eaten = False
+def convert_pos_to_pixel(cell):
+    tl = cell[0] * CELL_SIZE, cell[1] * CELL_SIZE
+    br = tl[0] + CELL_SIZE, tl[1] + CELL_SIZE
+    return tl, br
 
-def apple_collision():
-  global apple_pos, eaten
-  if apple_pos == snake_body[0]:
-    apple_pos = place_apple()
-    eaten = True
-    
+
 def place_apple():
-  col = randint(1, FIELD_WIDTH - 2)
-  row = randint(1, FIELD_HEIGHT - 2)
-  while (col,row) in snake_body:
-    col = randint(1, FIELD_WIDTH - 2)
-    row = randint(1, FIELD_HEIGHT - 2)
-  
-  return (col, row)
+    apple_pos = randint(0, CELL_NUM - 1), randint(0, CELL_NUM - 1)
+    while apple_pos in snake_body:
+        apple_pos = randint(0, CELL_NUM - 1), randint(0, CELL_NUM - 1)
+    return apple_pos
 
-init(autoreset = True)
 
-#settings
-FIELD_WIDTH = 32
-FIELD_HEIGHT = 16
-CELLS = [(col,row) for row in range(FIELD_HEIGHT) for col in range(FIELD_WIDTH)]
+# game constants
+FIELD_SIZE = 400
+CELL_NUM = 10
+CELL_SIZE = FIELD_SIZE / CELL_NUM
 
-#snake
-snake_body = [(5,FIELD_HEIGHT // 2),(4,FIELD_HEIGHT // 2),(3,FIELD_HEIGHT // 2)]
-DIRECTIONS = {'left': (-1,0), 'right': (1,0), 'up': (0,-1), 'down': (0,1)}
+# snake
+snake_body = [(4, 4), (3, 4), (2, 4)]
+DIRECTIONS = {'left': (-1, 0), 'right': (1, 0), 'up': (0, 1), 'down': (0, -1)}
 direction = DIRECTIONS['right']
-eaten = False
-
-#apple
+# apple
 apple_pos = place_apple()
+apple_eaten = False
 
+sg.theme('Green')
+field = sg.Graph(canvas_size=(FIELD_SIZE, FIELD_SIZE), graph_bottom_left=(0, 0),
+                 graph_top_right=(FIELD_SIZE, FIELD_SIZE))
+layout = [
+    [field],
+    [sg.Button('Back to menu')]
+]
 
+window = sg.Window('Snake', layout, return_keyboard_events=True)
+
+start_time = time()
 while True:
-  #clear the field
-  os.system('cls' if os.name == 'nt' else 'clear')
-  
-  #field drawing
-  print_field()
-  print('press q to exit')
-  
-  #get input
-  txt,_ = timedInput('get input:', timeout = 0.3)
-  match txt:
-    case 'w': 
-      direction = DIRECTIONS['up']
-    case 'a': 
-      direction = DIRECTIONS['left']
-    case 's': 
-      direction = DIRECTIONS['down']
-    case 'd': 
-      direction = DIRECTIONS['right']
-    case 'q': 
-      os.system('cls' if os.name == 'nt' else 'clear')
-      os.system("python games.py")
-  
-  #update the game
-  update_snake()
-  apple_collision()
+    event, values = window.read(timeout=10)
+    if event == sg.WIN_CLOSED:
+        break
 
-  #check death
-  if snake_body[0][0] in (0, FIELD_WIDTH - 1) or\
-  snake_body[0][1] in (0, FIELD_HEIGHT -1) or\
-  snake_body[0] in snake_body[1:]:
-    os.system('cls' if os.name == 'nt' else 'clear')
-    subprocess.Popen(['python3', './main.py'])
+    if event == 'Left:37':
+        direction = DIRECTIONS['left']
+    if event == 'Up:38':
+        direction = DIRECTIONS['up']
+    if event == 'Right:39':
+        direction = DIRECTIONS['right']
+    if event == 'Down:40':
+        direction = DIRECTIONS['down']
+
+    time_since_start = time() - start_time
+    if time_since_start >= 0.5:
+        start_time = time()
+
+        # apple snake collision
+        if snake_body[0] == apple_pos:
+            apple_pos = place_apple()
+            apple_eaten = True
+
+        # snake update
+        new_head = (snake_body[0][0] + direction[0], snake_body[0][1] + direction[1])
+        snake_body.insert(0, new_head)
+        if not apple_eaten:
+            snake_body.pop()
+        apple_eaten = False
+
+        # check death
+        if not 0 <= snake_body[0][0] <= CELL_NUM - 1 or \
+                not 0 <= snake_body[0][1] <= CELL_NUM - 1 or \
+                snake_body[0] in snake_body[1:]:
+            subprocess.Popen(['python3', './main.py'])
+            break
+
+        field.DrawRectangle((0, 0), (FIELD_SIZE, FIELD_SIZE), 'black')
+
+        tl, br = convert_pos_to_pixel(apple_pos)
+        field.DrawRectangle(tl, br, 'red')
+        # draw snake
+        for index, part in enumerate(snake_body):
+            tl, br = convert_pos_to_pixel(part)
+            color = 'yellow' if index == 0 else 'green'
+            field.DrawRectangle(tl, br, color)
+
+    if event == 'Back to menu':
+        subprocess.Popen(['python3', './main.py'])
+        break
+
+window.close()

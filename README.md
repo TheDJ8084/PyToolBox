@@ -3,14 +3,19 @@
 A Toolbox using python with handy tools
 
 ## Dependencies
-- [Colorama](https://pypi.org/project/colorama/)
-- [pytimedinput](https://pypi.org/project/pytimedinput/)
+- [Python](https://www.python.org/)
 - [PySimpleGUI](https://www.pysimplegui.org/en/latest/)
 
 ## Current Games
-- python
+- Dart Score
+- Hangman
+- Rock Paper Scissors
+- Snake
 
 ## Current Tools
-- dice roller
-- dart score
-- weight conversion
+- Calculator
+- Converter
+- Dice Roller
+- Random Number Generator
+- Stopwatch
+- Timer

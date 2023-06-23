@@ -1,4 +1,5 @@
-import random, os
+import random
+import subprocess
 import PySimpleGUI as sg
 
 layout = [
@@ -16,8 +17,8 @@ while True:
     event, values = window.read()
 
     if event == sg.WINDOW_CLOSED or event == 'Back to menu':
-      subprocess.Popen(['python3', './main.py'])
-      break
+        subprocess.Popen(['python3', './main.py'])
+        break
 
     if event == 'Generate Random Number':
         input_min = values['-MIN-']
