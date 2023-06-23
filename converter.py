@@ -36,7 +36,7 @@ while True:
             window['-OUTPUT-'].update('Please enter a number')
 
     if event == 'Back to menu':
-        os.system('python tools.py')
+        os.system('python main.py')
         sys.exit()
 
 window.close()

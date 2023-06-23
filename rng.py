@@ -1,46 +1,34 @@
-import os
-import time
 import random
-
-# Function to clear the console screen
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-#generates the number#
-def generate():
-  clear_screen()
-  print('---------------------------------')
-  min = int(input('min: '))
-  max = int(input('max: '))
-  print('---------------------------------')
-  time.sleep(1)
-  clear_screen()
-
-  print('---------------------------------')
-  print('min: '+ str(min))
-  print('max: '+str(max))
-  print('---------------------------------')
-
-  rng = random.randint(min,max)
-  print('output: ' + str(rng))
-  exitrng()
-
-#asks if you wanna exit#
-def exitrng():
-  print('---------------------------------')
-  choice = input('generate another number? (y/n)')
-  if choice == 'y':
-    generate() 
-  elif choice == 'n':
-    print('---------------------------------')
-    print('exiting...')
-    time.sleep(3)
-    os.system("python tools.py")
-  else:
-    print('invalid option, exiting...')
-    time.sleep(3)
-    os.system("python tools.py")
-    time.sleep(3)
+import PySimpleGUI as sg
 
 
-generate()
+layout = [
+  [sg.Text('Random Number Generator')],
+  [sg.Text('Min')],
+  [sg.Input(key = '-MIN-')],
+  [sg.Text('Max')],
+  [sg.Input(key = '-MAX-')],
+  [sg.Button('Generate Random Number')],
+  [sg.Text('Output')]
+  [sg.Button('Back to menu')]
+]
+
+window = sg.Window('Random Number Generator', layout)
+
+while True:
+  event, values = window.read()
+
+  if event == 'Generate Random Number':
+    input_min = int(values['-MIN-'])
+    input_max = int(values['-MAX-'])
+    if input_min.isnumeric() and input_max.isnumeric():
+      output = random.randint(input_min,input_max)
+      window['Output'].update(output)
+
+    else:
+      window['Output'].update('Please enter two numbers')
+
+  if event == 'Back to menu':
+    break
+
+window.close()
